@@ -1,12 +1,10 @@
-import { Injectable } from '@nestjs/common';<% if (crud && type !== 'graphql-code-first' && type !== 'graphql-schema-first') { %>
+import { Injectable } from '@nestjs/common';
 import { Create<%= singular(classify(name)) %>Dto } from './dto/create-<%= singular(name) %>.dto';
-import { Update<%= singular(classify(name)) %>Dto } from './dto/update-<%= singular(name) %>.dto';<% } else if (crud) { %>
-import { Create<%= singular(classify(name)) %>Input } from './dto/create-<%= singular(name) %>.input';
-import { Update<%= singular(classify(name)) %>Input } from './dto/update-<%= singular(name) %>.input';<% } %>
+import { Update<%= singular(classify(name)) %>Dto } from './dto/update-<%= singular(name) %>.dto';
 
 @Injectable()
-export class <%= classify(name) %>Service {<% if (crud) { %>
-  async create(<% if (type !== 'graphql-code-first' && type !== 'graphql-schema-first') { %>create<%= singular(classify(name)) %>Dto: Create<%= singular(classify(name)) %>Dto<% } else { %>create<%= singular(classify(name)) %>Input: Create<%= singular(classify(name)) %>Input<% } %>) {
+export class <%= classify(name) %>Service {
+  async create(create<%= singular(classify(name)) %>Dto: Create<%= singular(classify(name)) %>Dto) {
     return 'This action adds a new <%= lowercased(singular(classify(name))) %>';
   }
 
@@ -18,11 +16,11 @@ export class <%= classify(name) %>Service {<% if (crud) { %>
     return `This action returns a #${id} <%= lowercased(singular(classify(name))) %>`;
   }
 
-  async update(id: number, <% if (type !== 'graphql-code-first' && type !== 'graphql-schema-first') { %>update<%= singular(classify(name)) %>Dto: Update<%= singular(classify(name)) %>Dto<% } else { %>update<%= singular(classify(name)) %>Input: Update<%= singular(classify(name)) %>Input<% } %>) {
+  async update(id: number, update<%= singular(classify(name)) %>Dto: Update<%= singular(classify(name)) %>Dto) {
     return `This action updates a #${id} <%= lowercased(singular(classify(name))) %>`;
   }
 
   async remove(id: number) {
     return `This action removes a #${id} <%= lowercased(singular(classify(name))) %>`;
   }
-<% } %>}
+}

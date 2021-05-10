@@ -40,7 +40,8 @@ async function run(){
     await Promise.all([
         controller(name),
         model(name),
-        module(name)
+        module(name),
+        service(name),
     ]);
 }
 
@@ -63,6 +64,20 @@ async function module(name){
     const newFileName = `./temp/${singular(name)}.module.ts`;
     await writeFileAsync(newFileName, content);
     await unlinkAsync('./temp/module.ts');
+}
+
+async function service(name){
+    const content = await ejs.renderFile('./temp/service.ts', ejsContext);
+    const newFileName = `./temp/${singular(name)}.service.ts`;
+    await writeFileAsync(newFileName, content);
+    await unlinkAsync('./temp/service.ts');
+}
+
+async function dto(name){
+    const content = await ejs.renderFile('./temp/service.ts', ejsContext);
+    const newFileName = `./temp/${singular(name)}.service.ts`;
+    await writeFileAsync(newFileName, content);
+    await unlinkAsync('./temp/service.ts');
 }
 
 run();
