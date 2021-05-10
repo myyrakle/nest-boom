@@ -19,6 +19,6 @@
     "pluralize": "^8.0.0"
   },
   "bin": {
-    "nest-boom": "./index.js"
+    "nest-boom": "./src/index.js"
   }
 }
