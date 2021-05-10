@@ -1,0 +1,25 @@
+{
+  "name": "nest-boom",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/myyrakle/nest-boom.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/myyrakle/nest-boom/issues"
+  },
+  "homepage": "https://github.com/myyrakle/nest-boom#readme",
+  "dependencies": {
+    "pluralize": "^8.0.0"
+  },
+  "bin": {
+    "nest-boom": "src/index.js"
+  }
+}
