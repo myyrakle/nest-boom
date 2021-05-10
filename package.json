@@ -1,8 +1,7 @@
 {
   "name": "nest-boom",
-  "version": "0.0.0",
+  "version": "0.0.5",
   "description": "",
-  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -20,6 +19,6 @@
     "pluralize": "^8.0.0"
   },
   "bin": {
-    "nest-boom": "src/index.js"
+    "nest-boom": "./index.js"
   }
 }
