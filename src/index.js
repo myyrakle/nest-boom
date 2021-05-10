@@ -6,6 +6,10 @@ const ejs = require('ejs');
 const fse = require('fs-extra');
 const path = require('path');
 const { writeFile, unlink } = require('fs');
+const { promisify } = require('util');
+
+const writeFileAsync  = promisify(writeFile);
+const unlinkAsync  = promisify(unlink);
 
 const lowercased = (name) => {
     const classifiedName = classify(name);
@@ -34,14 +38,31 @@ async function run(){
 
     await fse.copy(file_path, './');
     await Promise.all([
-        controller(name)
+        controller(name),
+        model(name),
+        module(name)
     ]);
 }
 
 async function controller(name){
-    const content = ejs.renderFile('./temp/controller.ts', ejsContext);
-    await writeFile(`./temp/${singular(name).controller.ts}`, content);
-    await unlink('./temp/controller.ts');
+    const content = await ejs.renderFile('./temp/controller.ts', ejsContext);
+    const newFileName = `./temp/${singular(name)}.controller.ts`;
+    await writeFileAsync(newFileName, content);
+    await unlinkAsync('./temp/controller.ts');
+}
+
+async function model(name){
+    const content = await ejs.renderFile('./temp/model.ts', ejsContext);
+    const newFileName = `./temp/${singular(name)}.model.ts`;
+    await writeFileAsync(newFileName, content);
+    await unlinkAsync('./temp/model.ts');
+}
+
+async function module(name){
+    const content = await ejs.renderFile('./temp/module.ts', ejsContext);
+    const newFileName = `./temp/${singular(name)}.module.ts`;
+    await writeFileAsync(newFileName, content);
+    await unlinkAsync('./temp/module.ts');
 }
 
 run();
