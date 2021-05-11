@@ -5,11 +5,12 @@ const {singular} = require('pluralize');
 const ejs = require('ejs');
 const fse = require('fs-extra');
 const path = require('path');
-const { writeFile, unlink } = require('fs');
+const { writeFile, unlink, exists, access } = require('fs');
 const { promisify } = require('util');
 
 const writeFileAsync  = promisify(writeFile);
 const unlinkAsync  = promisify(unlink);
+const accessAsync  = promisify(access);
 
 const lowercased = (name) => {
     const classifiedName = classify(name);
@@ -25,18 +26,29 @@ const ejsContext = {
     lowercased,
 };
 
+let basePath = '.';
+
 async function run(){
     const [_1,_2, name] = process.argv;
-    console.log('인자값: ', name);
-    console.log('classify: ', classify(name))
-    console.log('singular: ', singular(name))
-    console.log('singular(classify): ', singular(classify(name)))
+
+    if(!name){
+        console.log(`사용 형태`)
+        console.log(`----------`)
+        console.log(`nest-boom <리소스 이름>`)
+        console.log(`----------`)
+        console.log(`(리소스 이름은 snake case)`)
+        return;
+    }
 
     ejsContext.name = name;
 
     const file_path = path.join(__dirname, 'template');
 
-    await fse.copy(file_path, './');
+    if(accessAsync('./src')) {
+        basePath = './src';
+    }
+
+    await fse.copy(file_path, basePath);
     await Promise.all([
         controller(name),
         model(name),
@@ -48,45 +60,45 @@ async function run(){
 }
 
 async function controller(name){
-    const content = await ejs.renderFile('./temp/controller.ts', ejsContext);
-    const newFileName = `./temp/${singular(name)}.controller.ts`;
+    const content = await ejs.renderFile(`${basePath}/temp/controller.ts`, ejsContext);
+    const newFileName = `${basePath}/temp/${singular(name)}.controller.ts`;
     await writeFileAsync(newFileName, content);
-    await unlinkAsync('./temp/controller.ts');
+    await unlinkAsync(`${basePath}/temp/controller.ts`);
 }
 
 async function model(name){
-    const content = await ejs.renderFile('./temp/model.ts', ejsContext);
-    const newFileName = `./temp/${singular(name)}.model.ts`;
+    const content = await ejs.renderFile(`${basePath}/temp/model.ts`, ejsContext);
+    const newFileName = `${basePath}/temp/${singular(name)}.model.ts`;
     await writeFileAsync(newFileName, content);
-    await unlinkAsync('./temp/model.ts');
+    await unlinkAsync(`${basePath}/temp/model.ts`);
 }
 
 async function module(name){
-    const content = await ejs.renderFile('./temp/module.ts', ejsContext);
-    const newFileName = `./temp/${singular(name)}.module.ts`;
+    const content = await ejs.renderFile(`${basePath}/temp/module.ts`, ejsContext);
+    const newFileName = `${basePath}/temp/${singular(name)}.module.ts`;
     await writeFileAsync(newFileName, content);
-    await unlinkAsync('./temp/module.ts');
+    await unlinkAsync(`${basePath}/temp/module.ts`);
 }
 
 async function service(name){
-    const content = await ejs.renderFile('./temp/service.ts', ejsContext);
-    const newFileName = `./temp/${singular(name)}.service.ts`;
+    const content = await ejs.renderFile(`${basePath}/temp/service.ts`, ejsContext);
+    const newFileName = `${basePath}/temp/${singular(name)}.service.ts`;
     await writeFileAsync(newFileName, content);
-    await unlinkAsync('./temp/service.ts');
+    await unlinkAsync(`${basePath}/temp/service.ts`);
 }
 
 async function createDto(name){
-    const content = await ejs.renderFile('./temp/dto/create-__name@singular__.dto.ts', ejsContext);
-    const newFileName = `./temp/dto/create-${singular(name)}.dto.ts`;
+    const content = await ejs.renderFile(`${basePath}/temp/dto/create-__name@singular__.dto.ts`, ejsContext);
+    const newFileName = `${basePath}/temp/dto/create-${singular(name)}.dto.ts`;
     await writeFileAsync(newFileName, content);
-    await unlinkAsync('./temp/dto/create-__name@singular__.dto.ts');
+    await unlinkAsync(`${basePath}/temp/dto/create-__name@singular__.dto.ts`);
 }
 
 async function updateDto(name){
-    const content = await ejs.renderFile('./temp/dto/update-__name@singular__.dto.ts', ejsContext);
-    const newFileName = `./temp/dto/update-${singular(name)}.dto.ts`;
+    const content = await ejs.renderFile(`${basePath}/temp/dto/update-__name@singular__.dto.ts`, ejsContext);
+    const newFileName = `${basePath}/temp/dto/update-${singular(name)}.dto.ts`;
     await writeFileAsync(newFileName, content);
-    await unlinkAsync('./temp/dto/update-__name@singular__.dto.ts');
+    await unlinkAsync(`${basePath}/temp/dto/update-__name@singular__.dto.ts`);
 }
 
 run();
