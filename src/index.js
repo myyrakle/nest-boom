@@ -5,12 +5,13 @@ const {singular} = require('pluralize');
 const ejs = require('ejs');
 const fse = require('fs-extra');
 const path = require('path');
-const { writeFile, unlink, exists, access } = require('fs');
+const { writeFile, unlink, access, rename } = require('fs');
 const { promisify } = require('util');
 
 const writeFileAsync  = promisify(writeFile);
 const unlinkAsync  = promisify(unlink);
 const accessAsync  = promisify(access);
+const renameAsync = promisify(rename)
 
 const lowercased = (name) => {
     const classifiedName = classify(name);
@@ -57,6 +58,8 @@ async function run(){
         createDto(name), 
         updateDto(name),
     ]);
+
+    await renameAsync(`${basePath}/temp`, `${basePath}/${singular(name)}`);
 }
 
 async function controller(name){
