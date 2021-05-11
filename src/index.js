@@ -42,6 +42,8 @@ async function run(){
         model(name),
         module(name),
         service(name),
+        createDto(name), 
+        updateDto(name),
     ]);
 }
 
@@ -73,11 +75,18 @@ async function service(name){
     await unlinkAsync('./temp/service.ts');
 }
 
-async function dto(name){
-    const content = await ejs.renderFile('./temp/service.ts', ejsContext);
-    const newFileName = `./temp/${singular(name)}.service.ts`;
+async function createDto(name){
+    const content = await ejs.renderFile('./temp/dto/create-__name@singular__.dto.ts', ejsContext);
+    const newFileName = `./temp/dto/create-${singular(name)}.dto.ts`;
     await writeFileAsync(newFileName, content);
-    await unlinkAsync('./temp/service.ts');
+    await unlinkAsync('./temp/dto/create-__name@singular__.dto.ts');
+}
+
+async function updateDto(name){
+    const content = await ejs.renderFile('./temp/dto/update-__name@singular__.dto.ts', ejsContext);
+    const newFileName = `./temp/dto/update-${singular(name)}.dto.ts`;
+    await writeFileAsync(newFileName, content);
+    await unlinkAsync('./temp/dto/update-__name@singular__.dto.ts');
 }
 
 run();
