@@ -60,6 +60,8 @@ async function run(){
     ]);
 
     await renameAsync(`${basePath}/temp`, `${basePath}/${singular(name)}`);
+
+    console.log('생성 완료');
 }
 
 async function controller(name){
