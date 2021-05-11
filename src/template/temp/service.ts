@@ -1,9 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { Create<%= singular(classify(name)) %>Dto } from './dto/create-<%= singular(name) %>.dto';
 import { Update<%= singular(classify(name)) %>Dto } from './dto/update-<%= singular(name) %>.dto';
+import { Sequelize } from 'sequelize-typescript';
+import { <%= classify(name) %> } from './<%= name %>.model';
 
 @Injectable()
 export class <%= classify(name) %>Service {
+  constructor(
+    @InjectModel(<%= classify(name) %>)
+    private readonly <%= lowercased(name) %>Model: typeof <%= classify(name) %>,
+    private readonly sequelize: Sequelize,
+  ) {}
+
   async create(create<%= singular(classify(name)) %>Dto: Create<%= singular(classify(name)) %>Dto) {
     return 'This action adds a new <%= lowercased(singular(classify(name))) %>';
   }
