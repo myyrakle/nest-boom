@@ -1,6 +1,6 @@
 # nest-boom
 
-![](https://img.shields.io/badge/language-Node-yellow) ![](https://img.shields.io/badge/version-0.4.1-brightgreen) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)]() 
+![](https://img.shields.io/badge/language-Node-yellow) ![](https://img.shields.io/badge/version-0.4.2-brightgreen) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)]() 
 
 이렇게 깔고
 ```
