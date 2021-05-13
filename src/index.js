@@ -55,12 +55,12 @@ async function run() {
 
     const file_path = path.join(__dirname, "template");
 
-    if (await accessAsync("./src")) {
+    if (accessAsync("./src")) {
         basePath = "./src";
     }
 
     try {
-        await fse.copy(file_path, basePath);
+        await fse.copy(file_path, `${basePath}/${name}`);
 
         await Promise.all([
             controller(name),
@@ -69,86 +69,93 @@ async function run() {
             service(name),
             createDto(name),
             updateDto(name),
+            updateAppModule(name),
         ]);
-
-        await renameAsync(`${basePath}/temp`, `${basePath}/${name}`);
 
         console.yellow(`@@@ ${name} 리소스 생성 완료`);
     } catch (error) {
         console.error(error);
-        await renameAsync(`${basePath}/temp`, `${basePath}/${name}`);
+        //await renameAsync(`${basePath}/temp`, `${basePath}/${name}`);
         console.red("!!! 리소스 생성 실패");
     }
 }
 
 async function controller(name) {
     const content = await ejs.renderFile(
-        `${basePath}/temp/controller.ts`,
+        `${basePath}/${name}/controller.ts`,
         ejsContext
     );
-    const newFileName = `${basePath}/temp/${name}.controller.ts`;
+    const newFileName = `${basePath}/${name}/${name}.controller.ts`;
     await writeFileAsync(newFileName, content);
-    await unlinkAsync(`${basePath}/temp/controller.ts`);
+    await unlinkAsync(`${basePath}/${name}/controller.ts`);
 
     console.green(">>>>> 컨트롤러 생성 완료");
 }
 
 async function model(name) {
     const content = await ejs.renderFile(
-        `${basePath}/temp/model.ts`,
+        `${basePath}/${name}/model.ts`,
         ejsContext
     );
-    const newFileName = `${basePath}/temp/${singular(name)}.model.ts`;
+    const newFileName = `${basePath}/${name}/${singular(name)}.model.ts`;
     await writeFileAsync(newFileName, content);
-    await unlinkAsync(`${basePath}/temp/model.ts`);
+    await unlinkAsync(`${basePath}/${name}/model.ts`);
 
     console.green(">>>>> 모델 생성 완료");
 }
 
 async function module(name) {
     const content = await ejs.renderFile(
-        `${basePath}/temp/module.ts`,
+        `${basePath}/${name}/module.ts`,
         ejsContext
     );
-    const newFileName = `${basePath}/temp/${name}.module.ts`;
+    const newFileName = `${basePath}/${name}/${name}.module.ts`;
     await writeFileAsync(newFileName, content);
-    await unlinkAsync(`${basePath}/temp/module.ts`);
+    await unlinkAsync(`${basePath}/${name}/module.ts`);
 
     console.green(">>>>> 모듈 생성 완료");
 }
 
 async function service(name) {
     const content = await ejs.renderFile(
-        `${basePath}/temp/service.ts`,
+        `${basePath}/${name}/service.ts`,
         ejsContext
     );
-    const newFileName = `${basePath}/temp/${name}.service.ts`;
+    const newFileName = `${basePath}/${name}/${name}.service.ts`;
     await writeFileAsync(newFileName, content);
-    await unlinkAsync(`${basePath}/temp/service.ts`);
+    await unlinkAsync(`${basePath}/${name}/service.ts`);
 
     console.green(">>>>> 서비스 생성 완료");
 }
 
 async function createDto(name) {
     const content = await ejs.renderFile(
-        `${basePath}/temp/dto/create-__name@singular__.dto.ts`,
+        `${basePath}/${name}/dto/create-__name@singular__.dto.ts`,
         ejsContext
     );
-    const newFileName = `${basePath}/temp/dto/create-${singular(name)}.dto.ts`;
+    const newFileName = `${basePath}/${name}/dto/create-${singular(
+        name
+    )}.dto.ts`;
     await writeFileAsync(newFileName, content);
-    await unlinkAsync(`${basePath}/temp/dto/create-__name@singular__.dto.ts`);
+    await unlinkAsync(
+        `${basePath}/${name}/dto/create-__name@singular__.dto.ts`
+    );
 
     console.green(">>>>> DTO(Create) 생성 완료");
 }
 
 async function updateDto(name) {
     const content = await ejs.renderFile(
-        `${basePath}/temp/dto/update-__name@singular__.dto.ts`,
+        `${basePath}/${name}/dto/update-__name@singular__.dto.ts`,
         ejsContext
     );
-    const newFileName = `${basePath}/temp/dto/update-${singular(name)}.dto.ts`;
+    const newFileName = `${basePath}/${name}/dto/update-${singular(
+        name
+    )}.dto.ts`;
     await writeFileAsync(newFileName, content);
-    await unlinkAsync(`${basePath}/temp/dto/update-__name@singular__.dto.ts`);
+    await unlinkAsync(
+        `${basePath}/${name}/dto/update-__name@singular__.dto.ts`
+    );
 
     console.green(">>>>> DTO(Update) 생성 완료");
 }
@@ -162,8 +169,23 @@ async function updateAppModule(name) {
     // await writeFileAsync(newFileName, content);
     // await unlinkAsync(`${basePath}/temp/dto/update-__name@singular__.dto.ts`);
 
-    if (await accessAsync(`${basePath}/app.module.ts`)) {
-        const content = await readFileAsync(`${basePath}/app.module.ts`);
+    const moduleCode = `${classify(name)}Module`;
+    const importCode = `import { ${moduleCode} } from './${name}/${name}.module'\n`;
+
+    if (accessAsync(`${basePath}/app.module.ts`)) {
+        let content = String(await readFileAsync(`${basePath}/app.module.ts`));
+
+        if (!content.includes(moduleCode)) {
+            content = importCode + content;
+
+            content = content.replace(
+                "providers: [",
+                `providers: [${moduleCode}, `
+            );
+
+            await writeFileAsync(`${basePath}/app.module.ts`, content);
+        }
+
         console.green(">>>>> AppModule 수정 완료");
     } else {
         console.red("!!!!! AppModule 없음");
