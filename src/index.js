@@ -59,18 +59,25 @@ async function run() {
     }
 
     await fse.copy(file_path, basePath);
-    await Promise.all([
-        controller(name),
-        model(name),
-        module(name),
-        service(name),
-        createDto(name),
-        updateDto(name),
-    ]);
 
-    await renameAsync(`${basePath}/temp`, `${basePath}/${name}`);
+    try {
+        await Promise.all([
+            controller(name),
+            model(name),
+            module(name),
+            service(name),
+            createDto(name),
+            updateDto(name),
+        ]);
 
-    console.yellow(`@@@ ${name} 리소스 생성 완료`);
+        await renameAsync(`${basePath}/temp`, `${basePath}/${name}`);
+
+        console.yellow(`@@@ ${name} 리소스 생성 완료`);
+    } catch (error) {
+        console.error(error);
+        await renameAsync(`${basePath}/temp`, `${basePath}/${name}`);
+        console.red("!!! 리소스 생성 실패");
+    }
 }
 
 async function controller(name) {
