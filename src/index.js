@@ -10,7 +10,7 @@ const fse = require("fs-extra");
 const path = require("path");
 const { writeFile, unlink, access, rename } = require("fs");
 const { promisify } = require("util");
-const { green, yellow, red } = require("chalk");
+const { green, yellow, red, blue } = require("chalk");
 
 const writeFileAsync = promisify(writeFile);
 const unlinkAsync = promisify(unlink);
@@ -18,6 +18,7 @@ const accessAsync = promisify(access);
 const renameAsync = promisify(rename);
 
 console.green = (...args) => console.log(green(args));
+console.blue = (...args) => console.log(blue(args));
 console.yellow = (...args) => console.log(yellow(args));
 console.red = (...args) => console.log(red(args));
 
@@ -39,11 +40,13 @@ async function run() {
     const [_1, _2, name] = process.argv;
 
     if (!name) {
-        console.log(`사용 형태`);
-        console.log(`----------`);
+        console.blue(`사용 형태`);
+        console.blue(`----------`);
         console.log(`nest-boom <리소스 이름>`);
-        console.log(`----------`);
-        console.log(`(리소스 이름은 snake case)`);
+        console.blue(`----------`);
+        console.blue(
+            `리소스 이름은 snake case, 복수형으로 해주세요. example: "users"`
+        );
         return;
     }
 
@@ -67,7 +70,7 @@ async function run() {
 
     await renameAsync(`${basePath}/temp`, `${basePath}/${name}`);
 
-    console.log("생성 완료");
+    console.yellow(`@@@ ${name} 리소스 생성 완료`);
 }
 
 async function controller(name) {
@@ -78,6 +81,8 @@ async function controller(name) {
     const newFileName = `${basePath}/temp/${name}.controller.ts`;
     await writeFileAsync(newFileName, content);
     await unlinkAsync(`${basePath}/temp/controller.ts`);
+
+    console.green(">>>>> 컨트롤러 생성 완료");
 }
 
 async function model(name) {
@@ -88,6 +93,8 @@ async function model(name) {
     const newFileName = `${basePath}/temp/${singular(name)}.model.ts`;
     await writeFileAsync(newFileName, content);
     await unlinkAsync(`${basePath}/temp/model.ts`);
+
+    console.green(">>>>> 모델 생성 완료");
 }
 
 async function module(name) {
@@ -98,6 +105,8 @@ async function module(name) {
     const newFileName = `${basePath}/temp/${name}.module.ts`;
     await writeFileAsync(newFileName, content);
     await unlinkAsync(`${basePath}/temp/module.ts`);
+
+    console.green(">>>>> 모듈 생성 완료");
 }
 
 async function service(name) {
@@ -108,6 +117,8 @@ async function service(name) {
     const newFileName = `${basePath}/temp/${name}.service.ts`;
     await writeFileAsync(newFileName, content);
     await unlinkAsync(`${basePath}/temp/service.ts`);
+
+    console.green(">>>>> 서비스 생성 완료");
 }
 
 async function createDto(name) {
@@ -118,6 +129,8 @@ async function createDto(name) {
     const newFileName = `${basePath}/temp/dto/create-${singular(name)}.dto.ts`;
     await writeFileAsync(newFileName, content);
     await unlinkAsync(`${basePath}/temp/dto/create-__name@singular__.dto.ts`);
+
+    console.green(">>>>> DTO(Create) 생성 완료");
 }
 
 async function updateDto(name) {
@@ -128,6 +141,8 @@ async function updateDto(name) {
     const newFileName = `${basePath}/temp/dto/update-${singular(name)}.dto.ts`;
     await writeFileAsync(newFileName, content);
     await unlinkAsync(`${basePath}/temp/dto/update-__name@singular__.dto.ts`);
+
+    console.green(">>>>> DTO(Update) 생성 완료");
 }
 
 run();
