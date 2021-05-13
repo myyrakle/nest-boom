@@ -3,7 +3,7 @@ import { Create<%= singular(classify(name)) %>Dto } from './dto/create-<%= singu
 import { Update<%= singular(classify(name)) %>Dto } from './dto/update-<%= singular(name) %>.dto';
 import { Sequelize } from 'sequelize-typescript';
 import { InjectModel } from '@nestjs/sequelize';
-import { <%= classify(name) %> } from './<%= name %>.model';
+import { <%= classify(singular(name)) %> } from './<%= singular(name) %>.model';
 
 @Injectable()
 export class <%= classify(name) %>Service {
