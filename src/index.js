@@ -58,9 +58,9 @@ async function run() {
         basePath = "./src";
     }
 
-    await fse.copy(file_path, basePath);
-
     try {
+        await fse.copy(file_path, basePath);
+
         await Promise.all([
             controller(name),
             model(name),
