@@ -8,11 +8,12 @@ const { singular } = require("pluralize");
 const ejs = require("ejs");
 const fse = require("fs-extra");
 const path = require("path");
-const { writeFile, unlink, access, rename } = require("fs");
+const { writeFile, unlink, access, rename, readFile } = require("fs");
 const { promisify } = require("util");
 const { green, yellow, red, blue } = require("chalk");
 
 const writeFileAsync = promisify(writeFile);
+const readFileAsync = promisify(readFile);
 const unlinkAsync = promisify(unlink);
 const accessAsync = promisify(access);
 const renameAsync = promisify(rename);
@@ -54,7 +55,7 @@ async function run() {
 
     const file_path = path.join(__dirname, "template");
 
-    if (accessAsync("./src")) {
+    if (await accessAsync("./src")) {
         basePath = "./src";
     }
 
@@ -150,6 +151,23 @@ async function updateDto(name) {
     await unlinkAsync(`${basePath}/temp/dto/update-__name@singular__.dto.ts`);
 
     console.green(">>>>> DTO(Update) 생성 완료");
+}
+
+async function updateAppModule(name) {
+    // const content = await ejs.renderFile(
+    //     `${basePath}/temp/dto/update-__name@singular__.dto.ts`,
+    //     ejsContext
+    // );
+    // const newFileName = `${basePath}/temp/dto/update-${singular(name)}.dto.ts`;
+    // await writeFileAsync(newFileName, content);
+    // await unlinkAsync(`${basePath}/temp/dto/update-__name@singular__.dto.ts`);
+
+    if (await accessAsync(`${basePath}/app.module.ts`)) {
+        const content = await readFileAsync(`${basePath}/app.module.ts`);
+        console.green(">>>>> AppModule 수정 완료");
+    } else {
+        console.red("!!!!! AppModule 없음");
+    }
 }
 
 run();
