@@ -8,8 +8,8 @@ import { <%= classify(singular(name)) %> } from './<%= singular(name) %>.model';
 @Injectable()
 export class <%= classify(name) %>Service {
   constructor(
-    @InjectModel(<%= classify(name) %>)
-    private readonly <%= lowercased(name) %>Model: typeof <%= classify(name) %>,
+    @InjectModel(<%= classify(singular(name)) %>)
+    private readonly <%= lowercased(singular(name)) %>Model: typeof <%= classify(singular(name)) %>,
     private readonly sequelize: Sequelize,
   ) {}
 
