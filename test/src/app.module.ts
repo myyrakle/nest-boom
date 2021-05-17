@@ -1,3 +1,4 @@
+import { TestsModule } from './tests/tests.module'
 import { FireBallsModule } from './fire-balls/fire-balls.module'
 import { FiresModule } from "./fires/fires.module";
 import { Module } from "@nestjs/common";
@@ -18,7 +19,7 @@ import { AuthModule } from "./auth/auth.module";
 import { UserModule } from "./user/user.module";
 
 @Module({
-    imports: [PostModule, PostCommentModule, AuthModule, UserModule],
+    imports: [TestsModule, PostModule, PostCommentModule, AuthModule, UserModule],
     controllers: [AppController],
     providers: [FireBallsModule, 
         FiresModule,

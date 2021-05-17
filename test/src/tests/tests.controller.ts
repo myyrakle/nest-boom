@@ -1,25 +1,24 @@
 
 import { Controller, Get, Post, Body, Put, Param, Delete } from '@nestjs/common';
-import { <%= classify(name) %>Service } from './<%= name %>.service';
-import { Create<%= singular(classify(name)) %>Dto } from './dto/create-<%= singular(name) %>.dto';
-import { Update<%= singular(classify(name)) %>Dto } from './dto/update-<%= singular(name) %>.dto';
+import { TestsService } from './tests.service';
+import { CreateTestDto } from './dto/create-test.dto';
+import { UpdateTestDto } from './dto/update-test.dto';
 import { ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 
-@Controller('<%= dasherize(name) %>')
-export class <%= classify(name) %>Controller {
-  constructor(private readonly <%= lowercased(name) %>Service: <%= classify(name) %>Service) {}
+@Controller('tests')
+export class TestsController {
+  constructor(private readonly testsService: TestsService) {}
 
   @ApiOperation({
     summary:
       'create',
   })
   @Post()
-  async create(@Body() create<%= singular(classify(name)) %>Dto: Create<%= singular(classify(name)) %>Dto) {
-    const data = await this.<%= lowercased(name) %>Service.create(create<%= singular(classify(name)) %>Dto);
+  async create(@Body() createTestDto: CreateTestDto) {
+    await this.testsService.create(createTestDto);
 
     return {
       success:true, 
-      data,
     };
   }
 
@@ -29,7 +28,7 @@ export class <%= classify(name) %>Controller {
   })
   @Get()
   async findAll() {
-    const list = await this.<%= lowercased(name) %>Service.findAll();
+    const list = await this.testsService.findAll();
 
     return {
       success:true, 
@@ -50,7 +49,7 @@ export class <%= classify(name) %>Controller {
   })
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    const data = await this.<%= lowercased(name) %>Service.findOne(+id);
+    const data = await this.testsService.findOne(+id);
 
     return {
       success:true, 
@@ -63,8 +62,8 @@ export class <%= classify(name) %>Controller {
       'update one',
   })
   @Put(':id')
-  async update(@Param('id') id: string, @Body() update<%= singular(classify(name)) %>Dto: Update<%= singular(classify(name)) %>Dto) {
-    await this.<%= lowercased(name) %>Service.update(+id, update<%= singular(classify(name)) %>Dto);
+  async update(@Param('id') id: string, @Body() updateTestDto: UpdateTestDto) {
+    await this.testsService.update(+id, updateTestDto);
 
     return {
       success:true, 
@@ -84,7 +83,7 @@ export class <%= classify(name) %>Controller {
   })
   @Delete(':id')
   async remove(@Param('id') id: string) {
-    await this.<%= lowercased(name) %>Service.remove(+id);
+    await this.testsService.remove(+id);
 
     return {
       success:true, 
