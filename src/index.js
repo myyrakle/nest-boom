@@ -184,8 +184,8 @@ async function updateAppModule(name) {
             content = importCode + content;
 
             content = content.replace(
-                "providers: [",
-                `providers: [${moduleCode}, `
+                "imports: [",
+                `imports: [${moduleCode}, `
             );
 
             await writeFileAsync(`${basePath}/app.module.ts`, content);
