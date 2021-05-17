@@ -8,7 +8,7 @@ const { singular } = require("pluralize");
 const ejs = require("ejs");
 const fse = require("fs-extra");
 const path = require("path");
-const { writeFile, unlink, access, rename, readFile } = require("fs");
+const { writeFile, unlink, access, rename, readFile, existsSync } = require("fs");
 const { promisify } = require("util");
 const { green, yellow, red, blue } = require("chalk");
 
@@ -55,8 +55,13 @@ async function run() {
 
     const file_path = path.join(__dirname, "template");
 
-    if (accessAsync("./src")) {
+    if (existsSync("./src")) {
         basePath = "./src";
+    }
+
+    if (existsSync(`${basePath}/${name}`)) {
+        console.red('!!! 동명의 리소스가 이미 존재하네요.');
+        return;
     }
 
     try {
@@ -172,7 +177,7 @@ async function updateAppModule(name) {
     const moduleCode = `${classify(name)}Module`;
     const importCode = `import { ${moduleCode} } from './${name}/${name}.module'\n`;
 
-    if (accessAsync(`${basePath}/app.module.ts`)) {
+    if (existsSync(`${basePath}/app.module.ts`)) {
         let content = String(await readFileAsync(`${basePath}/app.module.ts`));
 
         if (!content.includes(moduleCode)) {
