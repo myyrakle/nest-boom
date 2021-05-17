@@ -1,6 +1,6 @@
 # nest-boom
 
-![](https://img.shields.io/badge/language-Node-yellow) ![](https://img.shields.io/badge/version-1.1.0-brightgreen) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)]()
+![](https://img.shields.io/badge/language-Node-yellow) ![](https://img.shields.io/badge/version-1.1.1-brightgreen) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)]()
 
 nest-cli generate resource 명령을 커스텀한 도구입니다.  
 nest.ts + sequelize-typescript 기반입니다.

@@ -15,7 +15,7 @@ export class <%= classify(name) %>Service {
   ) {}
 
   async create(create<%= singular(classify(name)) %>Dto: Create<%= singular(classify(name)) %>Dto, transaction?: Transaction) {
-    return await this.<%= lowercased(singular(name)) %>Model.create({...create<%= singular(classify(name)) %>Dto});
+    return await this.<%= lowercased(singular(name)) %>Model.create({...create<%= singular(classify(name)) %>Dto}, { transaction });
   }
 
   async findAll() {
