@@ -1,3 +1,5 @@
+import { TestsModule } from './tests/tests.module'
+import { FoosModule } from './foos/foos.module'
 import { Module } from "@nestjs/common";
 import { PostController } from "./post/post.controller";
 import { AuthUser } from "./provider/auth_user.provider";
@@ -16,7 +18,7 @@ import { AuthModule } from "./auth/auth.module";
 import { UserModule } from "./user/user.module";
 
 @Module({
-    imports: [, PostModule, PostCommentModule, AuthModule, UserModule],
+    imports: [TestsModule, FoosModule, , PostModule, PostCommentModule, AuthModule, UserModule],
     controllers: [AppController],
     providers: [AppService, AuthUser, Mybatis, ...databaseProviders],
 })
