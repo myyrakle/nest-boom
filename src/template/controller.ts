@@ -4,6 +4,8 @@ import { <%= classify(name) %>Service } from './<%= name %>.service';
 import { Create<%= singular(classify(name)) %>Dto } from './dto/create-<%= singular(name) %>.dto';
 import { Update<%= singular(classify(name)) %>Dto } from './dto/update-<%= singular(name) %>.dto';
 import { ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { literal } from 'sequelize';
+import { Sequelize } from 'sequelize-typescript';
 
 @Controller('<%= dasherize(name) %>')
 export class <%= classify(name) %>Controller {
