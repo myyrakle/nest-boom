@@ -103,6 +103,8 @@ async function controller(name) {
     const newSpecFileName = `${basePath}/${name}/${name}.controller.spec.ts`;
     await writeFileAsync(newSpecFileName, specContent);
     await unlinkAsync(`${basePath}/${name}/controller.spec.ts`);
+
+    console.green(">>>>> 컨트롤러 테스트파일 생성 완료");
 }
 
 async function model(name) {
