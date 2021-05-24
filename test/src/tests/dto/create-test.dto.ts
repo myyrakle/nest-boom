@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreateFireDto {
+export class CreateTestDto {
     @ApiProperty({
         example: 'boom',
         description: '값',

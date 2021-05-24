@@ -95,6 +95,14 @@ async function controller(name) {
     await unlinkAsync(`${basePath}/${name}/controller.ts`);
 
     console.green(">>>>> 컨트롤러 생성 완료");
+
+    const specContent = await ejs.renderFile(
+        `${basePath}/${name}/controller.spec.ts`,
+        ejsContext
+    );
+    const newSpecFileName = `${basePath}/${name}/${name}.controller.spec.ts`;
+    await writeFileAsync(newSpecFileName, specContent);
+    await unlinkAsync(`${basePath}/${name}/controller.spec.ts`);
 }
 
 async function model(name) {
@@ -131,6 +139,16 @@ async function service(name) {
     await unlinkAsync(`${basePath}/${name}/service.ts`);
 
     console.green(">>>>> 서비스 생성 완료");
+
+    const specContent = await ejs.renderFile(
+        `${basePath}/${name}/service.spec.ts`,
+        ejsContext
+    );
+    const newSpecFileName = `${basePath}/${name}/${name}.service.spec.ts`;
+    await writeFileAsync(newSpecFileName, specContent);
+    await unlinkAsync(`${basePath}/${name}/service.spec.ts`);
+
+    console.green(">>>>> 서비스 테스트파일 생성 완료");
 }
 
 async function createDto(name) {

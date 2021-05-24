@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class UpdateFireDto {
+export class UpdateTestDto {
     @ApiProperty({
         example: 'boom',
         description: '값',
