@@ -28,15 +28,16 @@ export class <%= classify(name) %>Controller {
       'create',
   })
   @Post()
-  async create(@Body() create<%= singular(
-    classify(name)) %>Dto: Create<%= singular(classify(name)) %>Dto,
+  async create(
+    @Body() create<%= singular(classify(name)) %>Dto: Create<%= singular(classify(name)) %>Dto,
     // @CognitoInfo('cust') cognitoInfo: CognitoInfoDto,
   ) {
     await this.<%= lowercased(name) %>Service.create(create<%= singular(classify(name)) %>Dto);
 
     return {
       success:true, 
-    }
+      data,
+    };
   }
 
   //@ApiResourceTypes('api')
@@ -52,7 +53,8 @@ export class <%= classify(name) %>Controller {
 
     return {
       success:true, 
-    }
+      list,
+    };
   }
 
   //@ApiResourceTypes('api')
@@ -76,7 +78,8 @@ export class <%= classify(name) %>Controller {
 
     return {
       success:true, 
-    }
+      data,
+    };
   }
 
   //@ApiResourceTypes('api')
@@ -94,7 +97,7 @@ export class <%= classify(name) %>Controller {
 
     return {
       success:true, 
-    }
+    };
   }
 
   //@ApiResourceTypes('api')
@@ -118,6 +121,6 @@ export class <%= classify(name) %>Controller {
 
     return {
       success:true, 
-    }
+    };
   }
 }

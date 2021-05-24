@@ -3,6 +3,7 @@ import { Create<%= singular(classify(name)) %>Dto } from './dto/create-<%= singu
 import { Update<%= singular(classify(name)) %>Dto } from './dto/update-<%= singular(name) %>.dto';
 import { Sequelize } from 'sequelize-typescript';
 import { InjectModel } from '@nestjs/sequelize';
+import { Transaction } from 'sequelize';
 import { <%= classify(singular(name)) %> } from './<%= singular(name) %>.model';
 
 @Injectable()
@@ -13,23 +14,43 @@ export class <%= classify(name) %>Service {
     private readonly sequelize: Sequelize,
   ) {}
 
-  async create(create<%= singular(classify(name)) %>Dto: Create<%= singular(classify(name)) %>Dto) {
-    return 'This action adds a new <%= lowercased(singular(classify(name))) %>';
+  async create(create<%= singular(classify(name)) %>Dto: Create<%= singular(classify(name)) %>Dto, transaction?: Transaction) {
+    return await this.<%= lowercased(singular(name)) %>Model.create({...create<%= singular(classify(name)) %>Dto}, { transaction });
   }
 
   async findAll() {
-    return `This action returns all <%= lowercased(classify(name)) %>`;
+    return await this.<%= lowercased(singular(name)) %>Model.findAll();
   }
 
   async findOne(id: number) {
-    return `This action returns a #${id} <%= lowercased(singular(classify(name))) %>`;
+    return await this.<%= lowercased(singular(name)) %>Model.findOne({
+      where: {
+        id
+      }
+    })
   }
 
-  async update(id: number, update<%= singular(classify(name)) %>Dto: Update<%= singular(classify(name)) %>Dto) {
-    return `This action updates a #${id} <%= lowercased(singular(classify(name))) %>`;
+  async update(id: number, update<%= singular(classify(name)) %>Dto: Update<%= singular(classify(name)) %>Dto, transaction?: Transaction) {
+    return await this.<%= lowercased(singular(name)) %>Model.update(
+      { ...update<%= singular(classify(name)) %>Dto }, 
+      {
+        where: {
+          id
+        },
+        transaction,
+      }
+    );
   }
 
-  async remove(id: number) {
-    return `This action removes a #${id} <%= lowercased(singular(classify(name))) %>`;
+  async remove(id: number, transaction?: Transaction) {
+    return await this.<%= lowercased(singular(name)) %>Model.update(
+      {useYn: true}, 
+      {
+        where: {
+          id
+        },
+        transaction,
+      }
+    );
   }
 }

@@ -20,6 +20,19 @@ import {
   } from 'sequelize-typescript';
 import { ApiProperty } from '@nestjs/swagger';
 
+// @DefaultScope(() => ({
+//   attributes: {
+//     exclude: [
+//     ],
+//     // include: ['admin_nick_name', 'admin_profile_image_no'],
+//   },
+// }))
+// @Scopes(() => ({
+//   full: {
+//     attributes: [
+//     ],
+//   },
+// }))
 @Table({
     //tableName: 'tb_sample',
     paranoid: true,
@@ -30,7 +43,7 @@ import { ApiProperty } from '@nestjs/swagger';
     // deletedAt: false,
     // schema: 'cp',
 })
-export class Test extends Model {
+export class Foo extends Model {
     @ApiProperty({
         example: 1,
         description: '기본식별자',
