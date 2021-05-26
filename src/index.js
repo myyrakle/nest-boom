@@ -11,6 +11,7 @@ const path = require("path");
 const { writeFile, unlink, access, rename, readFile, existsSync } = require("fs");
 const { promisify } = require("util");
 const { green, yellow, red, blue } = require("chalk");
+const typescript = require('typescript');
 
 const writeFileAsync = promisify(writeFile);
 const readFileAsync = promisify(readFile);
