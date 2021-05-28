@@ -199,19 +199,10 @@ async function updateAppModule(name) {
     const importCode = `import { ${moduleCode} } from './${name}/${name}.module'\n`;
 
     if (existsSync(`${basePath}/app.module.ts`)) {
-        let content = String(await readFileAsync(`${basePath}/app.module.ts`));
-
-        if (!content.includes(moduleCode)) {
-            content = importCode + content;
-
-            content = content.replace(
-                "imports: [",
-                `imports: [${moduleCode}, `
-            );
-
-            await writeFileAsync(`${basePath}/app.module.ts`, content);
-        }
-
+        const appendModule = require('./append-module');
+        const content = importCode + appendModule(`${basePath}/app.module.ts`, moduleCode);
+        await writeFileAsync(`${basePath}/app.module.ts`, content);
+        
         console.green(">>>>> AppModule 수정 완료");
     } else {
         console.red("!!!!! AppModule 없음");

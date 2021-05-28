@@ -1,3 +1,4 @@
+import { FiresModule } from './fires/fires.module'
 import { TestsModule } from './tests/tests.module'
 import { Module } from "@nestjs/common";
 import { PostController } from "./post/post.controller";
@@ -15,9 +16,10 @@ import { UserRepository } from "./user/user.repository";
 import { RefreshTokenRepository } from "./refresh-tokens/refresh-token.repository";
 import { AuthModule } from "./auth/auth.module";
 import { UserModule } from "./user/user.module";
+import { BallsModule } from './balls/balls.module';
 
 @Module({
-    imports: [TestsModule, PostModule, PostCommentModule, AuthModule, UserModule],
+    imports: [TestsModule, PostModule, PostCommentModule, AuthModule, UserModule, BallsModule, FiresModule],
     controllers: [AppController],
     providers: [
         AppService,

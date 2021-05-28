@@ -17,7 +17,7 @@ import { AuthModule } from "./auth/auth.module";
 import { UserModule } from "./user/user.module";
 
 @Module({
-    imports: [TestsModule, PostModule, PostCommentModule, AuthModule, UserModule],
+    imports: [TestsModule, PostModule, PostCommentModule, AuthModule, UserModule,],
     controllers: [AppController],
     providers: [
         AppService,

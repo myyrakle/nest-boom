@@ -43,7 +43,7 @@ import { ApiProperty } from '@nestjs/swagger';
     // deletedAt: false,
     // schema: 'cp',
 })
-export class Foo extends Model {
+export class Fire extends Model {
     @ApiProperty({
         example: 1,
         description: '기본식별자',
